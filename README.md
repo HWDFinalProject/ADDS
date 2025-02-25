@@ -38,13 +38,13 @@
 
 
 ### 프로세스 설계
-![alt text](image.png)
+![alt text](images/image.png)
 
 ## 2. 다층 방공 시스템 설계
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 기존의 미사일 방공체계는 비교적 정교하게 구축되어 있으나, 드론을 활용한 위협에 대응하는 방공체계는 아직 미비한 수준이다. 이에 본 프로젝트에서는 효과적인 드론 방공을 위해 방어 체계를 3단계로 구분하여 설계하였다. 
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 ### 1단계: DMZ 지역 이동형 방공 시스템 배치
 DMZ 지역에 이동형(Block-II) 방공 시스템을 배치하여 초기 침투를 차단하고, 북한 드론이 남하하기 전에 신속하게 탐지 및 요격할 수 있도록 한다. 이동형 시스템은 트럭 또는 장갑차에 탐재되어 유동적으로 운용 가능하며, 다양한 지형과 작전 상황에 대응할 수 있도록 설계된다. 
 
@@ -55,7 +55,7 @@ DMZ 지역에 이동형(Block-II) 방공 시스템을 배치하여 초기 침투
 주요 국가시설 방어 체계를 구축하여 국가 안보를 최종적으로 보호한다. 국회, 정부청사, 군사 지휘소 등 핵심 인프라를 대상으로 천광 시스템 및 추가적인 방공망의 구축하여, 국가 중요시설이 드론 공격으로부터 안전하게 보호될 수 있도록 한다. 
 
 ## 3. 옥상 면적 탐지 모델 구축
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 ### 개요
 * 목표: 항공사진에서 건물을 탐지하고, 해당 건물의 면적을 계산하는 모델 
 * 환경: Colab Pro
@@ -73,7 +73,7 @@ DMZ 지역에 이동형(Block-II) 방공 시스템을 배치하여 초기 침투
     - 정보: 0.51m, 1024 * 1024 해상도
 
 ### 전처리 
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 1. 마스크 생성<br>
 json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 생성
 2. 오버랩 타일링<br>
@@ -82,7 +82,7 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
 타일링으로 낮아진 이미지 화질을 높이기 위해 Real-ESRGAN 모델 적용
 
 ### 후처리
-![alt text](image-6.png)
+![alt text](images/image-6.png)
 1. open-close<br>
 이미지의 형태학적 연산인 Opening, Closing을 순차적으로 사용하는 방법이다. Opening(열림) 연산은 침식(Erosion) 후 팽창(Dilation)하고, Closing(닫힘) 연산은 팽창(Dilation) 후 침식(Erosion) 하는 방식이다. 
 2. 노이즈 제거<br>
@@ -97,7 +97,7 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
     - Mean Success Rate: 실제 객체 영역(Ground Truth) 중 모델이 예측한 객체의 영역(Prediction)의 비율
 
 ### 최종 모델 
-![alt text](image-7.png)![alt text](image-8.png)
+![alt text](images/image-7.png)![alt text](images/image-8.png)
 * [모델 기록](https://github.com/HWDFinalProject/ADDS/blob/main/Document/%EB%AA%A8%EB%8D%B8%20%EA%B8%B0%EB%A1%9D.xlsx)
 * 최종 하이퍼파라미터
     - model: sam2_hiera_base_plus.pt
@@ -115,7 +115,7 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
 
 ### 데이터 매핑
 1. 주소 추출
-![alt text](image-9.png)
+![alt text](images/image-9.png)
 
 2. 건물 정보 데이터 매핑
 * 건물 면적 데이터
@@ -138,9 +138,9 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
     - 사용승인일 
 
 ## 4. 적합 건물 선정
-![alt text](image-10.png)
+![alt text](images/image-10.png)
 ### 델파이 기법
-![alt text](image-11.png)
+![alt text](images/image-11.png)
 * 기간: 2/4 ~ 2/12(8일)
 * 전문가 패널 구성: 건축 분야 전문가(2명), 방산 분야 전문가(2명), 국방 분야 전문가(1명)
 
@@ -155,7 +155,7 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
 - 주변 환경
     - 주요 시설과의 거리
     - 시야각 확보 
-![alt text](image-12.png)
+![alt text](images/image-12.png)
 
 ### 상위 건물 도출
 #### 데이터 정규화
@@ -170,7 +170,7 @@ json 형태로 제공된 각 건물의 polygon 좌표를 활용하여 마스크 
 |주요시설과의 거리|값이 클수록 유리(그대로 적용)|1|개|
 
 #### 적합 지점 필터링
-![alt text](image-13.png)
+![alt text](images/image-13.png)
 
 #### 가중치 산정
 * 가중치 계산식<br>
@@ -191,7 +191,7 @@ $$W'_j = \frac{W_j}{\Sigma^n_{j=1}W_j}$$
 $$S_i = \Sigma^n_{j=1}(W_j \cdot X_{ij})$$
 
 #### 상위 설치 지점 도출
-![alt text](image-14.png)
+![alt text](images/image-14.png)
 
 |순위|주소|최종점수|참고사항|
 |---|---|---|---|
@@ -202,7 +202,7 @@ $$S_i = \Sigma^n_{j=1}(W_j \cdot X_{ij})$$
 |5|경기 하남시 감일백제로 45 감일초등학교|1.1021|수도권 동쪽 주요 침입 경로 방어, 팔당댐 인근|
 
 #### 그리드별 최적 설치 지점 선정
-![alt text](image-15.png)
+![alt text](images/image-15.png)
 
 ## 5. 성과 및 전망
 ### 기대효과
